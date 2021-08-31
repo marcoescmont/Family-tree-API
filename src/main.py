@@ -8,8 +8,8 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
-#from models import Person
+from models import db
+from models import list_all, find_one, Queen
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -38,6 +38,14 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@app.route('/all', methods=['GET'])
+def get_all():
+    return jsonify(list_all(Queen))
+
+@app.route('/member/<int:id>', methods=['GET'])
+def get_one(id):
+    return jsonify(find_one(Queen, id))
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
